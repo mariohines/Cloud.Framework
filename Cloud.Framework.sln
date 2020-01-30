@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.Core", "src\Cloud.Framework.Core\Cloud.Framework.Core.csproj", "{DD2EF48A-2225-45EE-972B-223DC5C75D07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.MicroService.Health", "src\Cloud.Framework.MicroService.Health\Cloud.Framework.MicroService.Health.csproj", "{1DC57038-36B3-4CA5-9A3A-AE846F58972D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{DD2EF48A-2225-45EE-972B-223DC5C75D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD2EF48A-2225-45EE-972B-223DC5C75D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD2EF48A-2225-45EE-972B-223DC5C75D07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC57038-36B3-4CA5-9A3A-AE846F58972D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC57038-36B3-4CA5-9A3A-AE846F58972D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC57038-36B3-4CA5-9A3A-AE846F58972D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC57038-36B3-4CA5-9A3A-AE846F58972D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
