@@ -8,6 +8,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.Core.Tests", "tests\Cloud.Framework.Core.Tests\Cloud.Framework.Core.Tests.csproj", "{42B05D1B-CDF6-49E3-B2BE-671C10E68BBA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CFC660BC-9D34-4F6E-BF93-D449BD7369C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_build", "tools\_build\_build.csproj", "{9AF5A89D-118A-4B5F-8993-CAA326BDD8F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +30,12 @@ Global
 		{42B05D1B-CDF6-49E3-B2BE-671C10E68BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42B05D1B-CDF6-49E3-B2BE-671C10E68BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42B05D1B-CDF6-49E3-B2BE-671C10E68BBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AF5A89D-118A-4B5F-8993-CAA326BDD8F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF5A89D-118A-4B5F-8993-CAA326BDD8F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF5A89D-118A-4B5F-8993-CAA326BDD8F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{42B05D1B-CDF6-49E3-B2BE-671C10E68BBA} = {67A13783-BB8B-4AE4-ABF0-4C4518149B55}
+		{9AF5A89D-118A-4B5F-8993-CAA326BDD8F4} = {CFC660BC-9D34-4F6E-BF93-D449BD7369C1}
 	EndGlobalSection
 EndGlobal
