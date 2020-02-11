@@ -8,3 +8,4 @@ and a project to handle standard health checks for a web microservice.
 
 - [Documentation for Cloud.Framework.Core](./src/Cloud.Framework.Core/ReadMe.md)
 - [Documentation for Cloud.Framework.MicroService.Health](./src/Cloud.Framework.MicroService.Health)
+- [Documentation for Cloud.Framework.Persistence.Abstractions](./src/Cloud.Framework.Persistence.Abstractions)
