@@ -1,17 +1,23 @@
-using System.Linq;
+using System;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
+[GitHubActions(@"default", GitHubActionsImage.Ubuntu1604,
+               GitHubActionsImage.Ubuntu1804,
+               GitHubActionsImage.UbuntuLatest,
+               GitHubActionsImage.WindowsLatest,
+               InvokedTargets = new[] {nameof(Compile)})]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -29,9 +35,9 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion] readonly GitVersion GitVersion;
 
-    AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath TestsDirectory => RootDirectory / "tests";
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath SourceDirectory => Solution.Directory / "src";
+    AbsolutePath TestsDirectory => Solution.Directory / "tests";
+    AbsolutePath ArtifactsDirectory => Solution.Directory / "artifacts";
 
     Target Clean => _ => _
                          .Before(Restore)
@@ -64,15 +70,16 @@ class Build : NukeBuild
                                      });
 
     Target Pack => _ => _
-                        .DependsOn(Compile)
+                        // .DependsOn(Compile)
                         .Executes(() =>
                                   {
-                                      foreach (var project in Solution.Projects.Where(p => p.Directory.Parent.Equals(SourceDirectory))) {
-                                          DotNetPack(_ => _
-                                                         .SetConfiguration(Configuration)
-                                                         .SetTitle(project.Name)
-                                                         .SetAuthors("Mario Hines")
-                                                         .SetOutputDirectory(ArtifactsDirectory));
+                                      foreach (var project in Solution.Projects) {
+                                          // DotNetPack(_ => _
+                                          //                 .SetConfiguration(Configuration)
+                                          //                 .SetTitle(project.Name)
+                                          //                 .SetAuthors("Mario Hines")
+                                          //                 .SetOutputDirectory(ArtifactsDirectory));
+                                          Console.WriteLine(project.Directory);
                                       }
                                   });
 }
