@@ -1,5 +1,9 @@
+mode: ContinuousDeployment
 branches:
   master:
-    tag: Build
+    tag: master
     increment: Patch
     prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+ignore:
+  sha: []
