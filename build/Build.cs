@@ -7,16 +7,16 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.Tools.Xunit.XunitTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
-               On = new[] {GitHubActionsTrigger.Push},
+               GitHubActionsImage.UbuntuLatest,
+               GitHubActionsImage.MacOsLatest,
+               AutoGenerate = true,
                InvokedTargets = new[] {nameof(UnitTests)})]
 class Build : NukeBuild
 {
@@ -55,16 +55,6 @@ class Build : NukeBuild
                                                            .SetProjectFile(Solution));
                                      });
 
-    Target UnitTests => _ => _
-                        .DependsOn(Compile)
-                        .Executes(() =>
-                                  {
-                                      DotNetTest(_ => _
-                                                      .SetWorkingDirectory(TestsDirectory)
-                                                      .SetProjectFile(Solution)
-                                                      .EnableNoRestore());
-                                  });
-
     Target Compile => _ => _
                            .DependsOn(Restore)
                            .Executes(() =>
@@ -77,4 +67,14 @@ class Build : NukeBuild
                                                           .SetInformationalVersion(GitVersion.InformationalVersion)
                                                           .EnableNoRestore());
                                      });
+
+    Target UnitTests => _ => _
+                             .DependsOn(Compile)
+                             .Executes(() =>
+                                       {
+                                           DotNetTest(_ => _
+                                                           .SetWorkingDirectory(TestsDirectory)
+                                                           .SetProjectFile(Solution)
+                                                           .EnableNoRestore());
+                                       });
 }

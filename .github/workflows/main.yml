@@ -16,12 +16,26 @@
 
 name: main
 
-on: [push]
+on:
 
 jobs:
   windows-latest:
     name: windows-latest
     runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run './build.cmd UnitTests'
+        run: ./build.cmd UnitTests
+  ubuntu-latest:
+    name: ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run './build.cmd UnitTests'
+        run: ./build.cmd UnitTests
+  macOS-latest:
+    name: macOS-latest
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v1
       - name: Run './build.cmd UnitTests'
