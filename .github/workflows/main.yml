@@ -25,27 +25,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run 'Nuke Compile Target'
-        run: 
-          chmod +X ./build.sh
-          ./build.sh Compile
+      run: ./build.sh Compile
   ubuntu-18_04:
     name: ubuntu-18_04
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Run 'Nuke Compile Target'
-      run:
-        chmod +X ./build.sh
-        ./build.sh Compile
+      run: ./build.sh Compile
   ubuntu-latest:
     name: ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Run 'Nuke Compile Target'
-      run:
-        chmod +X ./build.sh
-        ./build.sh Compile
+      run: ./build.sh Compile
   windows-latest:
     name: windows-latest
     runs-on: windows-latest
@@ -59,6 +53,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run 'Nuke Compile Target'
-      run:
-        chmod +X ./build.sh
-        ./build.sh Compile
+      run: ./build.sh Compile
