@@ -4,8 +4,16 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Cloud.Framework.MicroService.Health.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddMicroServiceHealthChecks(this IServiceCollection services) {
             services.AddHealthChecks()
                     .AddCheck<DrainHealthCheck>("Drain", HealthStatus.Unhealthy, new[] {HealthCheckConstants.Tags.Drain})

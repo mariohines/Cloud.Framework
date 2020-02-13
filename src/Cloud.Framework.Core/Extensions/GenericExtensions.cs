@@ -1,5 +1,8 @@
 namespace Cloud.Framework.Core.Extensions
 {
+    /// <summary>
+    /// Static class to hold generic extensions.
+    /// </summary>
     public static class GenericExtensions
     {
         /// <summary>

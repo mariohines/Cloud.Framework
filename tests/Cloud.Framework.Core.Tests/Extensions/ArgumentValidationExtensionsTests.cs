@@ -96,7 +96,7 @@ namespace Cloud.Framework.Core.Tests.Extensions
             
             // act | assert
             action.Should().Throw<AggregateException>()
-                .WithInnerException<ArgumentNullException>();
+                .WithInnerException<ArgumentException>();
         }
 
         [Theory]

@@ -5,7 +5,7 @@ using System.Threading;
 namespace Cloud.Framework.Persistence.Abstractions.Sql.Base
 {
     /// <summary>
-    /// 
+    /// A struct to allow passing of information for calls to a SQL database.
     /// </summary>
     public readonly struct DbQuery
     {
@@ -17,7 +17,7 @@ namespace Cloud.Framework.Persistence.Abstractions.Sql.Base
         /// <summary>
         /// The parameters that are in the <see cref="Sql"/> property.
         /// </summary>
-        public object Parameters { get; }
+        public object? Parameters { get; }
 
         /// <summary>
         /// The type of the command being executed.
@@ -29,7 +29,7 @@ namespace Cloud.Framework.Persistence.Abstractions.Sql.Base
         /// </summary>
         public CancellationToken Token { get; }
 
-        private DbQuery(string sql, object parameters = null, CancellationToken token = default, CommandType type = CommandType.Text) {
+        private DbQuery(string sql, object? parameters = null, CancellationToken token = default, CommandType type = CommandType.Text) {
             Sql = sql;
             Parameters = parameters;
             Token = token;
@@ -45,7 +45,7 @@ namespace Cloud.Framework.Persistence.Abstractions.Sql.Base
         /// <param name="type">The <see cref="CommandType"/> for the <paramref name="sql"/> statement.</param>
         /// <returns>A DbQuery object.</returns>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="sql"/> argument is null or whitespace.</exception>
-        public static DbQuery Create(string sql, object parameters = null, CancellationToken token = default, CommandType type = CommandType.Text) {
+        public static DbQuery Create(string sql, object? parameters = null, CancellationToken token = default, CommandType type = CommandType.Text) {
             if (string.IsNullOrWhiteSpace(sql)) throw new ArgumentException("The sql parameter can not be null or whitespace.", nameof(sql));
             return new DbQuery(sql, parameters, token, type);
         }

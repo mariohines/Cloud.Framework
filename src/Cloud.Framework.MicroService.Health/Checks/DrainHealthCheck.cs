@@ -7,6 +7,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Cloud.Framework.MicroService.Health.Checks
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class DrainHealthCheck : IHealthCheck
     {
         private readonly IHealthStatusFlag _healthStatusFlag;

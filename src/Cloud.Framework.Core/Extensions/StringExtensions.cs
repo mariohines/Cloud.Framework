@@ -4,7 +4,7 @@ using System.Linq;
 namespace Cloud.Framework.Core.Extensions
 {
     /// <summary>
-    /// Class that holds extensions for strings.
+    /// Static class that holds extensions for strings.
     /// </summary>
     public static class StringExtensions
     {

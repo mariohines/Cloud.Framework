@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Cloud.Framework.Persistence.Abstractions.Sql.Interfaces;
 using FluentAssertions;
 using MySql.Data.MySqlClient;
@@ -7,12 +6,12 @@ using Xunit;
 
 namespace Cloud.Framework.Persistence.Abstractions.Tests.Sql.Interfaces
 {
-    public sealed class IDbContextTests
+    public sealed class IDbSettingsTests
     {
         [Fact]
         public void CreateDbConnection_Tests_Succeeds() {
             // arrange
-            var sut = Substitute.For<IDbContext>();
+            var sut = Substitute.For<IDbSettings<MySqlConnection>>();
             sut.CreateDbConnection().Returns(new MySqlConnection());
             
             // act
@@ -21,7 +20,7 @@ namespace Cloud.Framework.Persistence.Abstractions.Tests.Sql.Interfaces
             // assert
             actual.Should().NotBeNull()
                   .And
-                  .BeAssignableTo<DbConnection>();
+                  .BeOfType<MySqlConnection>();
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Cloud.Framework.Core.Tests.Extensions
     public sealed class StringExtensionsTests
     {
         [Theory]
-        [InlineData("", true)]
-        [InlineData("Test", false)]
-        [InlineData("   ", true)]
+        [InlineData("", false)]
+        [InlineData("Test", true)]
+        [InlineData("   ", false)]
         public void StringExtensions_HasValue_Returns_Expected(string sut, bool expected)
         {
             // act
@@ -60,17 +60,17 @@ namespace Cloud.Framework.Core.Tests.Extensions
         [Theory]
         [InlineData("Hello {0}", new object[] {"World"}, "Hello World")]
         [InlineData("{0} {1}", new object[] {"Hello", "World"}, "Hello World")]
-        [InlineData("{0} {2} {3}", new object[] {"A", "B", "C"}, "A B C")]
-        [InlineData("{0} {2} {3} {4}", new object[] {"A", "B", "C", 1}, "A B C 1")]
-        [InlineData("{0} {2} {3} {4} {5}", new object[] {"A", "B", "C", 1, 2}, "A B C 1 2")]
-        [InlineData("{0} {2} {3} {4} {5} {6}", new object[] {"A", "B", "C", 1, 2, 3}, "A B C 1 2 3")]
+        [InlineData("{0} {1} {2}", new object[] {"A", "B", "C"}, "A B C")]
+        [InlineData("{0} {1} {2} {3}", new object[] {"A", "B", "C", 1}, "A B C 1")]
+        [InlineData("{0} {1} {2} {3} {4}", new object[] {"A", "B", "C", 1, 2}, "A B C 1 2")]
+        [InlineData("{0} {1} {2} {3} {4} {5}", new object[] {"A", "B", "C", 1, 2, 3}, "A B C 1 2 3")]
         public void StringExtensions_FormatWith_Returns_Expected(string sut, object[] parameters, string expected)
         {
             // act
             var actual = sut.FormatWith(parameters);
             
             // assert
-            actual.Should().BeNullOrWhiteSpace();
+            actual.Should().NotBeNullOrWhiteSpace();
             actual.Should().Be(expected);
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Threading;
 using Cloud.Framework.Persistence.Abstractions.Sql.Base;
 using FluentAssertions;
 using Xunit;
@@ -18,10 +19,11 @@ namespace Cloud.Framework.Persistence.Abstractions.Tests.Sql.Base
             
             // assert
             sut.Parameters.Should().BeNull();
-            sut.Token.Should().Be(default);
+            sut.Token.Should().Be(default(CancellationToken));
             sut.Type.Should().Be(CommandType.Text);
             sut.Sql.Should().NotBeNullOrWhiteSpace()
-               .And.Should().Be(sql);
+               .And
+               .Be(sql);
         }
 
         [Fact]
