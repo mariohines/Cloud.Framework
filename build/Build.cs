@@ -12,11 +12,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions(@"main", GitHubActionsImage.Ubuntu1604,
-               GitHubActionsImage.Ubuntu1804,
-               GitHubActionsImage.UbuntuLatest,
-               GitHubActionsImage.WindowsLatest,
-               GitHubActionsImage.MacOsLatest,
+[GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
                On = new []{GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Compile)})]
 class Build : NukeBuild
