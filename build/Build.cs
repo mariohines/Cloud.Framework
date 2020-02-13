@@ -62,7 +62,7 @@ class Build : NukeBuild
                                       DotNetTest(_ => _
                                                       .SetWorkingDirectory(TestsDirectory)
                                                       .SetProjectFile(Solution)
-                                                      .EnableNoBuild());
+                                                      .EnableNoRestore());
                                   });
 
     Target Compile => _ => _
