@@ -17,6 +17,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
                GitHubActionsImage.UbuntuLatest,
                GitHubActionsImage.MacOsLatest,
                AutoGenerate = true,
+               On = new []{GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(UnitTests)})]
 class Build : NukeBuild
 {
