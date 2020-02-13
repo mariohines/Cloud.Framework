@@ -4,17 +4,20 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.Xunit.XunitTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
-               On = new []{GitHubActionsTrigger.Push},
-               InvokedTargets = new[] {nameof(Compile)})]
+               On = new[] {GitHubActionsTrigger.Push},
+               InvokedTargets = new[] {nameof(UnitTests)})]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -37,20 +40,30 @@ class Build : NukeBuild
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
     Target Clean => _ => _
-                         .Before(Restore)
-                         .Executes(() =>
-                                   {
-                                       SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-                                       TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-                                       EnsureCleanDirectory(ArtifactsDirectory);
-                                   });
+                        .Executes(() =>
+                                  {
+                                      SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+                                      TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+                                      EnsureCleanDirectory(ArtifactsDirectory);
+                                  });
 
     Target Restore => _ => _
-                          .Executes(() =>
-                                    {
-                                        DotNetRestore(_ => _
-                                                          .SetProjectFile(Solution));
-                                    });
+                           .DependsOn(Clean)
+                           .Executes(() =>
+                                     {
+                                         DotNetRestore(_ => _
+                                                           .SetProjectFile(Solution));
+                                     });
+
+    Target UnitTests => _ => _
+                        .DependsOn(Compile)
+                        .Executes(() =>
+                                  {
+                                      DotNetTest(_ => _
+                                                      .SetWorkingDirectory(TestsDirectory)
+                                                      .SetProjectFile(Solution)
+                                                      .EnableNoBuild());
+                                  });
 
     Target Compile => _ => _
                            .DependsOn(Restore)
