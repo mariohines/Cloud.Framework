@@ -16,7 +16,7 @@
 
 name: main
 
-on:
+on: [push]
 
 jobs:
   windows-latest:
