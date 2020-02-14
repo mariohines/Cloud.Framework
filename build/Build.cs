@@ -38,6 +38,10 @@ class Build : NukeBuild
     AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
+    const string Author = "Mario S. Hines";
+    const string ProjectUrl = "https://githumb.com/mariohines/Cloud.Framework";
+    const string CopyRight = "Gigatech Software Consulting";
+
     Target Clean => _ => _
                         .Executes(() =>
                                   {
@@ -76,4 +80,22 @@ class Build : NukeBuild
                                                            .SetProjectFile(Solution)
                                                            .EnableNoRestore());
                                        });
+
+    Target Pack => _ => _
+                        .DependsOn(UnitTests)
+                        .Executes(() =>
+                                  {
+                                      foreach (var project in Solution.Projects) {
+                                          DotNetPack(_ => _
+                                                          .SetConfiguration(Configuration)
+                                                          .SetWorkingDirectory(project.Directory)
+                                                          .SetOutputDirectory(ArtifactsDirectory)
+                                                          .SetPackageProjectUrl(ProjectUrl)
+                                                          .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
+                                                          .SetAuthors(Author)
+                                                          .SetTitle(project.Name)
+                                                          .SetCopyright(CopyRight)
+                                                          .SetDescription(project.Name));
+                                      }
+                                  });
 }
