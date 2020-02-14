@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 namespace Cloud.Framework.Core.Extensions
 {
@@ -36,11 +35,11 @@ namespace Cloud.Framework.Core.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Method that appends a string value to another string.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="source">The string this method is executed on.</param>
+        /// <param name="value">The value to append.</param>
+        /// <returns>A new string value.</returns>
         public static string Append(this string source, string value) {
             return string.Concat(source.EmptyIfNull(), value);
         }
@@ -54,28 +53,6 @@ namespace Cloud.Framework.Core.Extensions
         /// <returns>A boolean value.</returns>
         public static bool IsLengthBetween(this string source, int min, int max) {
             return source.HasValue() && source.Length >= min && source.Length <= max;
-        }
-
-        /// <summary>
-        /// Method that evaluates a string as a Guid.
-        /// </summary>
-        /// <param name="source">The string this method is executed on.</param>
-        /// <returns>The string representation of a Guid without special characters.</returns>
-        public static string? ToCleanGuid(this string source) {
-            if (!source.HasValue()) {
-                return null;
-            }
-
-            source = source.Trim();
-            if (!source.IsLengthBetween(32, 36)) {
-                return null;
-            }
-
-            var alphaNumericChars = source.Where(char.IsLetterOrDigit).ToArray();
-
-            return alphaNumericChars.Length == 32
-                       ? new string(alphaNumericChars)
-                       : null;
         }
 
         /// <summary>

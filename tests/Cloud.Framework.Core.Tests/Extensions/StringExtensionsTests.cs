@@ -22,6 +22,18 @@ namespace Cloud.Framework.Core.Tests.Extensions
             actual.Should().Be(expected);
         }
 
+        [Fact]
+        public void StringExtensions_EmptyIfNull_Returns_Expected() {
+            // arrange
+            string sut = null;
+            
+            // act
+            var actual = sut.EmptyIfNull();
+            
+            // assert
+            actual.Should().Be(string.Empty);
+        }
+
         [Theory]
         [InlineData("true", true)]
         [InlineData("false", false)]
@@ -35,6 +47,37 @@ namespace Cloud.Framework.Core.Tests.Extensions
         {
             // act
             var actual = sut.ToBoolean();
+            
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("Hel", "lo", "Hello")]
+        [InlineData("Good", "Bye", "GoodBye")]
+        [InlineData("Good ", "Night", "Good Night")]
+        [InlineData("Suck", " Up", "Suck Up")]
+        [InlineData("Just a ", "test", "Just a test")]
+        public void StringExtensions_Append_Returns_Expected(string sut, string appendedValue, string expected) {
+            // act
+            var actual = sut.Append(appendedValue);
+            
+            // assert
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void StringExtensions_Append_Chained_Append_Returns_Expected() {
+            // assert
+            const string sut = "This";
+            const string expected = "This is just a test.";
+
+            // act
+            var actual = sut.Append(" is")
+                            .Append(" just")
+                            .Append(" a")
+                            .Append(" test")
+                            .Append(".");
             
             // assert
             actual.Should().Be(expected);

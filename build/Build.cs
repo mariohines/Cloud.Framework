@@ -14,8 +14,6 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
-               GitHubActionsImage.UbuntuLatest,
-               GitHubActionsImage.MacOsLatest,
                AutoGenerate = true,
                On = new []{GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(UnitTests)})]
