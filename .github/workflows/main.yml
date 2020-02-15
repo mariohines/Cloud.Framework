@@ -24,5 +24,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Run './build.cmd UnitTests'
-        run: ./build.cmd UnitTests
+      - name: Run './build.cmd UnitTests Pack'
+        run: ./build.cmd UnitTests Pack
+        env:
+            GitHubToken: ${{ secrets.GITHUB_TOKEN }}

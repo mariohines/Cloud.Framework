@@ -10,13 +10,15 @@ using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.ChangeLog.ChangelogTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
                AutoGenerate = true,
-               On = new []{GitHubActionsTrigger.Push},
-               InvokedTargets = new[] {nameof(UnitTests)})]
+               On = new[] {GitHubActionsTrigger.Push},
+               InvokedTargets = new[] {nameof(UnitTests), nameof(Pack)},
+               ImportGitHubTokenAs = nameof(GitHubToken))]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -30,6 +32,9 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.")] 
+    readonly string GitHubToken;
+
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion] readonly GitVersion GitVersion;
@@ -41,6 +46,8 @@ class Build : NukeBuild
     const string Author = "Mario S. Hines";
     const string ProjectUrl = "https://githumb.com/mariohines/Cloud.Framework";
     const string CopyRight = "Gigatech Software Consulting";
+    const string ChangeLogFile = "ChangeLog.md";
+    const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
 
     Target Clean => _ => _
                         .Executes(() =>
@@ -68,7 +75,7 @@ class Build : NukeBuild
                                                           .SetAssemblyVersion(GitVersion.AssemblySemVer)
                                                           .SetFileVersion(GitVersion.AssemblySemFileVer)
                                                           .SetInformationalVersion(GitVersion.InformationalVersion)
-                                                          .EnableNoRestore());
+                                                          .SetNoRestore(InvokedTargets.Contains(Restore)));
                                      });
 
     Target UnitTests => _ => _
@@ -78,24 +85,45 @@ class Build : NukeBuild
                                            DotNetTest(_ => _
                                                            .SetWorkingDirectory(TestsDirectory)
                                                            .SetProjectFile(Solution)
-                                                           .EnableNoRestore());
+                                                           .SetNoBuild(InvokedTargets.Contains(Compile)));
                                        });
 
     Target Pack => _ => _
-                        .DependsOn(UnitTests)
+                        .DependsOn(Compile)
                         .Executes(() =>
                                   {
-                                      foreach (var project in Solution.Projects) {
-                                          DotNetPack(_ => _
-                                                          .SetConfiguration(Configuration)
-                                                          .SetWorkingDirectory(project.Directory)
-                                                          .SetOutputDirectory(ArtifactsDirectory)
-                                                          .SetPackageProjectUrl(ProjectUrl)
-                                                          .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
-                                                          .SetAuthors(Author)
-                                                          .SetTitle(project.Name)
-                                                          .SetCopyright(CopyRight)
-                                                          .SetDescription(project.Name));
-                                      }
+                                      Solution.Projects
+                                              .ForEach(project =>
+                                                       {
+                                                           var currentChangeLogFile = project.Directory / ChangeLogFile;
+                                                           DotNetPack(_ => _
+                                                                           .SetConfiguration(Configuration)
+                                                                           .SetWorkingDirectory(project.Directory)
+                                                                           .SetOutputDirectory(ArtifactsDirectory)
+                                                                           .SetPackageProjectUrl(ProjectUrl)
+                                                                           .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
+                                                                           .SetAuthors(Author)
+                                                                           .SetTitle(project.Name)
+                                                                           .SetCopyright(CopyRight)
+                                                                           .SetDescription(project.Name)
+                                                                           .SetPackageReleaseNotes(GetNuGetReleaseNotes(currentChangeLogFile, GitRepository))
+                                                                           .SetVersion(GitVersion.NuGetVersionV2));
+                                                       });
+                                  });
+
+    Target Push => _ => _
+                        .DependsOn(Pack)
+                        .Requires(() => GitHubToken)
+                        .Executes(() =>
+                                  {
+                                      ArtifactsDirectory.GlobFiles("*.nupkg")
+                                                        .NotEmpty()
+                                                        .ForEach(x =>
+                                                                 {
+                                                                     DotNetNuGetPush(_ => _
+                                                                                          .SetTargetPath(x)
+                                                                                          .SetSource(PackagePushSource)
+                                                                                          .SetApiKey(GitHubToken));
+                                                                 });
                                   });
 }
