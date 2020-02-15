@@ -46,7 +46,7 @@ namespace Cloud.Framework.Persistence.Abstractions.Sql.Base
         /// <returns>A DbQuery object.</returns>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="sql"/> argument is null or whitespace.</exception>
         public static DbQuery Create(string sql, object? parameters = null, CancellationToken token = default, CommandType type = CommandType.Text) {
-            if (string.IsNullOrWhiteSpace(sql)) throw new ArgumentException("The sql parameter can not be null or whitespace.", nameof(sql));
+            if (string.IsNullOrWhiteSpace(sql)) throw new ArgumentException($"The {nameof(sql)} parameter can not be null or whitespace.", nameof(sql));
             return new DbQuery(sql, parameters, token, type);
         }
     }

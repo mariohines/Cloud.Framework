@@ -1,10 +1,12 @@
+![Main Worklow](https://github.com/mariohines/Cloud.Framework/workflows/main/badge.svg?event=push)
+
 # Cloud Framework
 ## Author: Mario Hines
 ## Framework: .NET Standard 2.1
 
 ### Description
-Custom solution that has a project for standard development to avoid redundancy
-and a project to handle standard health checks for a web microservice.
+Custom solution that has projects for standard development to avoid redundancy, standard health checks for a web microservice, 
+and SQL database persistence abstractions to be used with or without a Micro-ORM framework (ie. Dapper).
 
 - [Documentation for Cloud.Framework.Core](./src/Cloud.Framework.Core/ReadMe.md)
 - [Documentation for Cloud.Framework.MicroService.Health](./src/Cloud.Framework.MicroService.Health)
