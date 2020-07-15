@@ -29,12 +29,12 @@ class Build : NukeBuild
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main() => Execute<Build>(x => x.Compile);
+    public static int Main() => Execute<Build>();
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.")] 
+    [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.")]
     readonly string GitHubToken;
 
     [Solution] readonly Solution Solution;
@@ -50,6 +50,7 @@ class Build : NukeBuild
     const string CopyRight = "Gigatech Software Consulting";
     const string ChangeLogFile = "ChangeLog.md";
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
+    const string PackageFiles = "*.nupkg";
 
     Target Clean => _ => _
                         .Executes(() =>
@@ -91,7 +92,7 @@ class Build : NukeBuild
                                        });
 
     Target Pack => _ => _
-                        .DependsOn(Compile)
+                        .DependsOn(UnitTests)
                         .Executes(() =>
                                   {
                                       Solution.Projects
@@ -118,7 +119,7 @@ class Build : NukeBuild
                         .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
-                                      ArtifactsDirectory.GlobFiles("*.nupkg")
+                                      ArtifactsDirectory.GlobFiles(PackageFiles)
                                                         .NotEmpty()
                                                         .ForEach(x =>
                                                                  {

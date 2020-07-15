@@ -1,7 +1,7 @@
 using System.Data.Common;
 using Cloud.Framework.Persistence.Abstractions.Sql.Interfaces;
 using FluentAssertions;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NSubstitute;
 using Xunit;
 
