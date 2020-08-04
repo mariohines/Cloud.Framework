@@ -37,7 +37,7 @@ class Build : NukeBuild
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
-    readonly string GitHubToken = "4784fe0f27449330c9a40b4a55c4e5ffb8c522b0";
+    readonly string GitHubToken; //= "4784fe0f27449330c9a40b4a55c4e5ffb8c522b0";
 
     [Required] [Solution] readonly Solution Solution;
     [Required] [GitRepository] readonly GitRepository GitRepository;
