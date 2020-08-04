@@ -40,7 +40,7 @@ class Build : NukeBuild
 
     [Required] [Solution] readonly Solution Solution;
     [Required] [GitRepository] readonly GitRepository GitRepository;
-    [Required] [GitVersion(Framework = "netcoreapp3.1")] readonly GitVersion GitVersion;
+    [Required] [GitVersion(Framework = "netcoreapp2.1")] readonly GitVersion GitVersion;
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
