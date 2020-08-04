@@ -27,7 +27,7 @@ jobs:
       - name: Run './build.cmd Push'
         run: ./build.cmd Push
         env:
-            GITHUBTOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
   macOS-latest:
     name: macOS-latest
     runs-on: macOS-latest
@@ -36,4 +36,4 @@ jobs:
       - name: Run './build.cmd Push'
         run: ./build.cmd Push
         env:
-            GITHUBTOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
