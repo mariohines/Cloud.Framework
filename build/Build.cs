@@ -1,4 +1,5 @@
 using Nuke.Common;
+using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -20,8 +21,7 @@ using static Nuke.Common.ChangeLog.ChangelogTasks;
                AutoGenerate = true,
                On = new[] {GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Push)},
-               ImportGitHubTokenAs = nameof(GitHubToken),
-               ImportSecrets = new []{ nameof(GitHubToken)})]
+               ImportGitHubTokenAs = nameof(GitHubToken))]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -35,12 +35,12 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
+    // [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
     readonly string GitHubToken = "01b1b8ee84abacd86b4a743903d4b6862f56b651";
 
-    [Solution] readonly Solution Solution;
-    [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(Framework = "netcoreapp2.1")] readonly GitVersion GitVersion;
+    [Required] [Solution] readonly Solution Solution;
+    [Required] [GitRepository] readonly GitRepository GitRepository;
+    [Required] [GitVersion(Framework = "netcoreapp3.1")] readonly GitVersion GitVersion;
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -118,12 +118,14 @@ class Build : NukeBuild
 
     Target Push => _ => _
                         .DependsOn(Pack)
-                        .Requires(() => GitHubToken)
+                        .Consumes(Pack)
+                        // .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
                                       DotNetNuGetPush(s => s
                                                            .SetSource(PackagePushSource)
                                                            .SetApiKey(GitHubToken)
-                                                           .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (s, v) => s.SetTargetPath(v)));
+                                                           .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (_, v) => 
+                                                                                                                                   _.SetTargetPath(v)));
                                   });
 }
