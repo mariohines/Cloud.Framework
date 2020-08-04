@@ -14,9 +14,9 @@ using static Nuke.Common.ChangeLog.ChangelogTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
-               GitHubActionsImage.UbuntuLatest,
-               GitHubActionsImage.MacOs1014,
+[GitHubActions(@"main",
+               GitHubActionsImage.Ubuntu1804,
+               GitHubActionsImage.MacOsLatest,
                AutoGenerate = true,
                On = new[] {GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Push)},
