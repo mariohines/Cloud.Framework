@@ -15,11 +15,11 @@ using static Nuke.Common.ChangeLog.ChangelogTasks;
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions(@"main", GitHubActionsImage.WindowsLatest,
-               GitHubActionsImage.Ubuntu1804,
+               GitHubActionsImage.UbuntuLatest,
                GitHubActionsImage.MacOs1014,
                AutoGenerate = true,
                On = new[] {GitHubActionsTrigger.Push},
-               InvokedTargets = new[] {nameof(UnitTests), nameof(Pack)},
+               InvokedTargets = new[] {nameof(Push)},
                ImportGitHubTokenAs = nameof(GitHubToken))]
 class Build : NukeBuild
 {
@@ -39,11 +39,11 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion] readonly GitVersion GitVersion;
+    [GitVersion(Framework = "netcoreapp2.1")] readonly GitVersion GitVersion;
 
-    AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath TestsDirectory => RootDirectory / "tests";
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    static AbsolutePath SourceDirectory => RootDirectory / "src";
+    static AbsolutePath TestsDirectory => RootDirectory / "tests";
+    static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
     const string Author = "Mario S. Hines";
     const string ProjectUrl = "https://githumb.com/mariohines/Cloud.Framework";
@@ -52,13 +52,13 @@ class Build : NukeBuild
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
     const string PackageFiles = "*.nupkg";
 
-    Target Clean => _ => _
-                        .Executes(() =>
-                                  {
-                                      SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-                                      TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-                                      EnsureCleanDirectory(ArtifactsDirectory);
-                                  });
+    static Target Clean => _ => _
+                               .Executes(() =>
+                                         {
+                                             SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+                                             TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+                                             EnsureCleanDirectory(ArtifactsDirectory);
+                                         });
 
     Target Restore => _ => _
                            .DependsOn(Clean)
@@ -110,7 +110,8 @@ class Build : NukeBuild
                                                                            .SetCopyright(CopyRight)
                                                                            .SetDescription(project.Name)
                                                                            .SetPackageReleaseNotes(GetNuGetReleaseNotes(currentChangeLogFile, GitRepository))
-                                                                           .SetVersion(GitVersion.NuGetVersionV2));
+                                                                           .SetVersion(GitVersion.NuGetVersionV2)
+                                                                           .EnableIncludeSymbols());
                                                        });
                                   });
 
@@ -119,14 +120,9 @@ class Build : NukeBuild
                         .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
-                                      ArtifactsDirectory.GlobFiles(PackageFiles)
-                                                        .NotEmpty()
-                                                        .ForEach(x =>
-                                                                 {
-                                                                     DotNetNuGetPush(_ => _
-                                                                                          .SetTargetPath(x)
-                                                                                          .SetSource(PackagePushSource)
-                                                                                          .SetApiKey(GitHubToken));
-                                                                 });
+                                      DotNetNuGetPush(s => s
+                                                           .SetSource(PackagePushSource)
+                                                           .SetApiKey(GitHubToken)
+                                                           .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (s, v) => s.SetTargetPath(v)));
                                   });
 }
