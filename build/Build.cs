@@ -35,12 +35,12 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    // [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
+    [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
     readonly string GitHubToken = "01b1b8ee84abacd86b4a743903d4b6862f56b651";
 
     [Required] [Solution] readonly Solution Solution;
     [Required] [GitRepository] readonly GitRepository GitRepository;
-    [Required] [GitVersion(Framework = "netcoreapp2.1")] readonly GitVersion GitVersion;
+    [Required] [GitVersion(Framework = "netcoreapp3.1")] readonly GitVersion GitVersion;
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -119,7 +119,7 @@ class Build : NukeBuild
     Target Push => _ => _
                         .DependsOn(Pack)
                         .Consumes(Pack)
-                        // .Requires(() => GitHubToken)
+                        .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
                                       DotNetNuGetPush(s => s
