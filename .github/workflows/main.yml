@@ -25,15 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run './build.cmd Push'
-        run: ./build.cmd Push
-        with:
-            GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+        run: ./build.cmd Push $(GitHubToken)
+        env:
+            GitHubToken: ${{ secrets.GITHUB_TOKEN }}
   macOS-latest:
     name: macOS-latest
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v1
       - name: Run './build.cmd Push'
-        run: ./build.cmd Push
-        with:
-            GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+        run: ./build.cmd Push $(GitHubToken)
+        env:
+            GitHubToken: ${{ secrets.GITHUB_TOKEN }}
