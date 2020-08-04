@@ -7,7 +7,9 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.NuGet;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -51,6 +53,7 @@ class Build : NukeBuild
     const string CopyRight = "Gigatech Software Consulting";
     const string ChangeLogFile = "ChangeLog.md";
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
+    const string PackageSourceName = "github";
     const string PackageFiles = "*.nupkg";
 
     Target Clean => _ => _
@@ -123,9 +126,14 @@ class Build : NukeBuild
                         .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
+                                      NuGetTasks.NuGetSourcesAdd(_ => _
+                                                                      .SetSource(PackagePushSource)
+                                                                      .SetName(PackageSourceName)
+                                                                      .SetUserName(GitRepository.GetGitHubOwner())
+                                                                      .SetPassword(GitHubToken)
+                                                                      .EnableStorePasswordInClearText());
                                       DotNetNuGetPush(s => s
-                                                           .SetSource(PackagePushSource)
-                                                           .SetApiKey(GitHubToken)
+                                                           .SetSource(PackageSourceName)
                                                            .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (_, v) => 
                                                                                                                                    _.SetTargetPath(v)));
                                   });
