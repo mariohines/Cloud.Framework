@@ -126,7 +126,7 @@ class Build : NukeBuild
                         .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
-                                      DotNet($"nuget add source {PackagePushSource} -n {PackageSourceName} -u {GitRepository.GetGitHubName()} -p {GitHubToken} --store-password-in-clear-text");
+                                      DotNet($"nuget add source {PackagePushSource} -n {PackageSourceName} -u {GitRepository.GetGitHubOwner()} -p {GitHubToken} --store-password-in-clear-text");
                                       DotNetNuGetPush(s => s
                                                            .SetSource(PackageSourceName)
                                                            .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (_, v) => 
