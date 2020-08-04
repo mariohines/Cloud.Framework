@@ -9,7 +9,6 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.NuGet;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -38,7 +37,7 @@ class Build : NukeBuild
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
-    readonly string GitHubToken = "01b1b8ee84abacd86b4a743903d4b6862f56b651";
+    readonly string GitHubToken = "4784fe0f27449330c9a40b4a55c4e5ffb8c522b0";
 
     [Required] [Solution] readonly Solution Solution;
     [Required] [GitRepository] readonly GitRepository GitRepository;
