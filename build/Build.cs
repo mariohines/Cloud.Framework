@@ -115,6 +115,7 @@ class Build : NukeBuild
                                                                            .SetDescription(project.Name)
                                                                            .SetPackageReleaseNotes(GetNuGetReleaseNotes(currentChangeLogFile, GitRepository))
                                                                            .SetVersion(GitVersion.NuGetVersionV2)
+                                                                           .SetRepositoryUrl("https://github.com/mariohines/Cloud.Framework")
                                                                            .EnableIncludeSymbols());
                                                        });
                                   });
@@ -129,6 +130,7 @@ class Build : NukeBuild
                                       DotNet($"nuget add source {PackagePushSource} -n {PackageSourceName} -u {GitRepository.GetGitHubOwner()} -p {GitHubToken} --store-password-in-clear-text");
                                       DotNetNuGetPush(s => s
                                                            .SetSource(PackageSourceName)
+                                                           .SetApiKey(GitHubToken)
                                                            .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (_, v) => 
                                                                                                                                    _.SetTargetPath(v)));
                                   });
