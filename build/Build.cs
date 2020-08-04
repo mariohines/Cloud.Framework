@@ -20,7 +20,7 @@ using static Nuke.Common.ChangeLog.ChangelogTasks;
                AutoGenerate = true,
                On = new[] {GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Push)},
-               ImportGitHubTokenAs = "GITHUBTOKEN")]
+               ImportGitHubTokenAs = nameof(GitHubToken))]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -34,7 +34,7 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    // [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.")]
+    [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.")]
     readonly string GitHubToken = "01b1b8ee84abacd86b4a743903d4b6862f56b651";
 
     [Solution] readonly Solution Solution;
