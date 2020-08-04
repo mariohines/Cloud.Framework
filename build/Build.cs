@@ -52,7 +52,7 @@ class Build : NukeBuild
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
     const string PackageFiles = "*.nupkg";
 
-    static Target Clean => _ => _
+    Target Clean => _ => _
                                .Executes(() =>
                                          {
                                              SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
