@@ -20,7 +20,7 @@ using static Nuke.Common.ChangeLog.ChangelogTasks;
                AutoGenerate = true,
                On = new[] {GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Push)},
-               ImportGitHubTokenAs = nameof(GitHubToken))]
+               ImportGitHubTokenAs = "GITHUBTOKEN")]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
