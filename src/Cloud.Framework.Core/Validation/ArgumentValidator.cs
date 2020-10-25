@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cloud.Framework.Core.Extensions;
 
 namespace Cloud.Framework.Core.Validation
 {
@@ -9,10 +8,10 @@ namespace Cloud.Framework.Core.Validation
     /// </summary>
     public sealed class ArgumentValidator
     {
-        private ICollection<Exception> Exceptions { get; }
+        private ICollection<Exception> ExceptionSet { get; }
 
         private ArgumentValidator() {
-            Exceptions = new List<Exception>();
+            ExceptionSet = new List<Exception>();
         }
 
         /// <summary>
@@ -26,8 +25,8 @@ namespace Cloud.Framework.Core.Validation
         /// It's also to maintain fluency.
         /// </remarks>
         /// <returns>An ArgumentValidator object.</returns>
-        public static ArgumentValidator? Begin() {
-            return default;
+        public static ArgumentValidator Begin() {
+            return new ArgumentValidator();
         }
 
         /// <summary>
@@ -37,11 +36,7 @@ namespace Cloud.Framework.Core.Validation
         /// <param name="exception">The exception to add to the collection of exceptions.</param>
         /// <returns>The current instance of the <see cref="ArgumentValidator"/> class.</returns>
         public static ArgumentValidator AddException(ArgumentValidator validator, Exception exception) {
-            if (validator.IsNull()) {
-                validator = new ArgumentValidator();
-            }
-
-            validator.Exceptions.Add(exception);
+            validator.ExceptionSet.Add(exception);
             return validator;
         }
 
@@ -50,8 +45,8 @@ namespace Cloud.Framework.Core.Validation
         /// </summary>
         /// <param name="validator">The current instance of the <see cref="ArgumentValidator"/> class.</param>
         /// <returns>The collection of exceptions that were added via validation.</returns>
-        public static IEnumerable<Exception>? GetArgumentExceptions(ArgumentValidator? validator) {
-            return validator?.Exceptions;
+        public static IEnumerable<Exception> GetArgumentExceptions(ArgumentValidator validator) {
+            return validator.ExceptionSet;
         }
     }
 }

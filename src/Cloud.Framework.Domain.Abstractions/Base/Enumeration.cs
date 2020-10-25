@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Cloud.Framework.Core.Abstract
+namespace Cloud.Framework.Domain.Abstractions.Base
 {
     /// <summary>
     /// Abstract implementation of an enumeration class that boasts greater usability than a regular enumeration.
     /// </summary>
     /// <typeparam name="T">The value type for the enumeration.</typeparam>
-    public abstract class Enumeration<T> : IComparable
-        where T : struct, IComparable
+    public abstract class Enumeration<T> : IComparable, IComparable<Enumeration<T>>
+        where T : struct, IComparable, IComparable<T>
     {
         /// <summary>The display name for the enumeration.</summary>
         public string Name { get; }
@@ -37,35 +37,31 @@ namespace Cloud.Framework.Core.Abstract
 
             var doesTypeMatch = GetType() == obj.GetType();
             var doesValueMatch = Id.Equals(other.Id);
+            var doesHashCodeMatch = GetHashCode() == other.GetHashCode();
 
-            return doesTypeMatch && doesValueMatch;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        protected bool Equals(Enumeration<T> other) {
-            return Id.Equals(other.Id);
+            return doesTypeMatch && doesValueMatch && doesHashCodeMatch;
         }
 
         /// <inheritdoc />
         public override int GetHashCode() {
-            return Id.GetHashCode();
+            return Id.GetHashCode() + Name.GetHashCode();
         }
 
         /// <inheritdoc />
         public int CompareTo(object obj) => Id.CompareTo(((Enumeration<T>) obj).Id);
 
+        /// <inheritdoc />
+        public int CompareTo(Enumeration<T> other) => Id.CompareTo(other.Id);
+
+
         /// <summary>
         /// Get all the implementations of a specific <see cref="Enumeration{T}"/>.
         /// </summary>
-        /// <typeparam name="TY">The type of <see cref="Enumeration{T}"/></typeparam>.
+        /// <typeparam name="TEnumeration">The type of <see cref="Enumeration{T}"/></typeparam>.
         /// <returns>A collection of <see cref="Enumeration{T}"/>.</returns>
-        public static IEnumerable<TY> GetAll<TY>() where TY : Enumeration<T> {
-            var fields = typeof(TY).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-            return fields.Select(f => f.GetValue(null)).Cast<TY>();
+        public static IEnumerable<TEnumeration> GetAll<TEnumeration>() where TEnumeration : Enumeration<T> {
+            var fields = typeof(TEnumeration).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            return fields.Select(f => f.GetValue(null)).Cast<TEnumeration>();
         }
     }
 }

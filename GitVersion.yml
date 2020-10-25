@@ -1,11 +1,18 @@
 assembly-versioning-scheme: MajorMinorPatch
 mode: ContinuousDeployment
+next-version: 1.0.0
 branches:
   master:
+    regex: ^master$|^main$
     mode: ContinuousDeployment
+    tag: ''
+    increment: Minor
+    is-release-branch: true
   feature:
+    regex: ^features?[/-]
     mode: ContinuousDeployment
-    tag: 'feature'
+    tag: feature
+    increment: Patch
 ignore:
   sha: []
 merge-message-formats: {}

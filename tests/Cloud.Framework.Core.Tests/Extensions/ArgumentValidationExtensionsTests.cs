@@ -8,10 +8,7 @@ using Xunit;
 
 namespace Cloud.Framework.Core.Tests.Extensions
 {
-    public class ArgumentValidationExtensionsTests
-    {
-        
-    }public sealed class ArgumentValidatorExtensionsTests
+    public sealed class ArgumentValidatorExtensionsTests
     {
         [Fact]
         public void ArgumentValidator_Validate_Returns_Null()
@@ -20,7 +17,7 @@ namespace Cloud.Framework.Core.Tests.Extensions
             var validator = ArgumentValidator.Begin().Validate();
             
             // assert
-            validator.Should().BeNull();
+            validator.Should().NotBeNull();
         }
 
         [Fact]
@@ -64,7 +61,8 @@ namespace Cloud.Framework.Core.Tests.Extensions
                 .Validate();
             
             // assert
-            validator.Should().BeNull();
+            var exceptions = ArgumentValidator.GetArgumentExceptions(validator);
+            exceptions.Should().BeEmpty();
         }
 
         [Fact]

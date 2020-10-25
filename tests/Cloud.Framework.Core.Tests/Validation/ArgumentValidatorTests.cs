@@ -15,7 +15,7 @@ namespace Cloud.Framework.Core.Tests.Validation
             var validator = ArgumentValidator.Begin();
             
             // assert
-            validator.Should().BeNull();
+            validator.Should().NotBeNull();
         }
 
         [Fact]
@@ -38,8 +38,8 @@ namespace Cloud.Framework.Core.Tests.Validation
             var exceptions = ArgumentValidator.GetArgumentExceptions(validator).ToList(); //doing a .ToList() to avoid multiple enumerations.
             
             // assert
-            exceptions.Should().NotBeNull();
-            exceptions.Should().HaveCount(1);
+            exceptions.Should().NotBeEmpty();
+            exceptions.Should().HaveCountGreaterThan(0);
             exceptions.Single().Should().BeOfType<Exception>();
         }
     }

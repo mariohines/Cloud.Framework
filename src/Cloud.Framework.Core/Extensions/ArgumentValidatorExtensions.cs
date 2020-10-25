@@ -16,11 +16,11 @@ namespace Cloud.Framework.Core.Extensions
         /// <param name="source">The <see cref="ArgumentValidator"/> this method is executed on.</param>
         /// <returns>An <see cref="ArgumentValidator"/> object.</returns>
         /// <exception cref="AggregateException">All the exceptions that were added during evaluation of arguments.</exception>
-        public static ArgumentValidator Validate(this ArgumentValidator source)
-        {
-            if (!source.IsNull())
+        public static ArgumentValidator Validate(this ArgumentValidator source) {
+            var exceptions = ArgumentValidator.GetArgumentExceptions(source).ToList();
+            if (exceptions.Any())
             {
-                throw new AggregateException(ArgumentValidator.GetArgumentExceptions(source));
+                throw new AggregateException(exceptions);
             }
 
             return source;

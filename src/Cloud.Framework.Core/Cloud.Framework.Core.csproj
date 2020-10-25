@@ -6,10 +6,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <DocumentationFile>bin\$(Configuration)\Cloud.Framework.Core.xml</DocumentationFile>
+        <Description>Basic core library that holds general use functionality that can/should be used across the entirety of a solution.</Description>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="GitVersionTask" Version="5.3.7" />
-    </ItemGroup>
 
 </Project>

@@ -7,7 +7,6 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
@@ -19,7 +18,7 @@ using static Nuke.Common.ChangeLog.ChangelogTasks;
 [GitHubActions(@"main",
                GitHubActionsImage.Ubuntu1804,
                GitHubActionsImage.MacOsLatest,
-               AutoGenerate = true,
+               AutoGenerate = false,
                On = new[] {GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Push)},
                ImportGitHubTokenAs = nameof(GitHubToken))]
@@ -37,7 +36,7 @@ class Build : NukeBuild
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
-    readonly string GitHubToken; //= "4784fe0f27449330c9a40b4a55c4e5ffb8c522b0";
+    readonly string GitHubToken;
 
     [Required] [Solution] readonly Solution Solution;
     [Required] [GitRepository] readonly GitRepository GitRepository;
@@ -49,7 +48,7 @@ class Build : NukeBuild
 
     const string Author = "Mario S. Hines";
     const string ProjectUrl = "https://githumb.com/mariohines/Cloud.Framework";
-    const string CopyRight = "Gigatech Software Consulting";
+    const string Copyright = "Gigatech Software Consulting, LLC.";
     const string ChangeLogFile = "ChangeLog.md";
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
     const string PackageSourceName = "github";
@@ -110,7 +109,7 @@ class Build : NukeBuild
                                                                            .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
                                                                            .SetAuthors(Author)
                                                                            .SetTitle(project.Name)
-                                                                           .SetCopyright(CopyRight)
+                                                                           .SetCopyright(Copyright)
                                                                            .SetDescription(project.Name)
                                                                            .SetPackageReleaseNotes(GetNuGetReleaseNotes(currentChangeLogFile, GitRepository))
                                                                            .SetVersion(GitVersion.NuGetVersionV2)
@@ -126,9 +125,9 @@ class Build : NukeBuild
                         .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
-                                      DotNet($"nuget add source {PackagePushSource} -n {PackageSourceName} -u {GitRepository.GetGitHubOwner()} -p {GitHubToken} --store-password-in-clear-text");
+                                      // DotNet($"nuget add source {PackagePushSource} -n {PackageSourceName} -u {GitRepository.GetGitHubOwner()} -p {GitHubToken} --store-password-in-clear-text");
                                       DotNetNuGetPush(s => s
-                                                           .SetSource(PackageSourceName)
+                                                           .SetSource(PackagePushSource)
                                                            .SetApiKey(GitHubToken)
                                                            .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (_, v) => 
                                                                                                                                    _.SetTargetPath(v)));

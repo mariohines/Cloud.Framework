@@ -6,10 +6,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <DocumentationFile>bin\$(Configuration)\Cloud.Framework.Persistence.Abstractions.xml</DocumentationFile>
+        <Description>The base framework for accessing a SQL database.</Description>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="GitVersionTask" Version="5.3.7" />
-    </ItemGroup>
 
 </Project>
