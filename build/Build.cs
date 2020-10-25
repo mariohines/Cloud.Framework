@@ -11,7 +11,6 @@ using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.ChangeLog.ChangelogTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -40,7 +39,7 @@ class Build : NukeBuild
 
     [Required] [Solution] readonly Solution Solution;
     [Required] [GitRepository] readonly GitRepository GitRepository;
-    [Required] [GitVersion(Framework = "netcoreapp2.1")] readonly GitVersion GitVersion;
+    [Required] [GitVersion(Framework = "netcoreapp3.0")] readonly GitVersion GitVersion;
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -109,7 +108,7 @@ class Build : NukeBuild
                                                                            .SetTitle(project.Name)
                                                                            .SetCopyright(Copyright)
                                                                            .SetDescription(project.Name)
-                                                                           .SetVersion(GitVersion.SemVer)
+                                                                           .SetVersion(GitVersion.MajorMinorPatch)
                                                                            .SetRepositoryUrl("https://github.com/mariohines/Cloud.Framework")
                                                                            .SetVerbostiy(DotNetVerbosity.Detailed)
                                                                            .EnableIncludeSymbols());
