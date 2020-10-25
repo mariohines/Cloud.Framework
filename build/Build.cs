@@ -109,8 +109,9 @@ class Build : NukeBuild
                                                                            .SetTitle(project.Name)
                                                                            .SetCopyright(Copyright)
                                                                            .SetDescription(project.Name)
-                                                                           .SetVersion(GitVersion.NuGetVersionV2)
+                                                                           .SetVersion(GitVersion.SemVer)
                                                                            .SetRepositoryUrl("https://github.com/mariohines/Cloud.Framework")
+                                                                           .SetVerbostiy(DotNetVerbosity.Detailed)
                                                                            .EnableIncludeSymbols());
                                                        });
                                   });
