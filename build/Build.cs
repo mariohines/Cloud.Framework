@@ -49,7 +49,6 @@ class Build : NukeBuild
     const string Author = "Mario S. Hines";
     const string ProjectUrl = "https://github.com/mariohines/Cloud.Framework";
     const string Copyright = "Gigatech Software Consulting, LLC.";
-    const string ChangeLogFile = "ChangeLog.md";
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
     const string PackageSourceName = "github";
     const string PackageFiles = "*.nupkg";
@@ -100,7 +99,6 @@ class Build : NukeBuild
                                       Solution.Projects
                                               .ForEach(project =>
                                                        {
-                                                           var currentChangeLogFile = project.Directory / ChangeLogFile;
                                                            DotNetPack(_ => _
                                                                            .SetConfiguration(Configuration)
                                                                            .SetWorkingDirectory(project.Directory)
@@ -111,7 +109,6 @@ class Build : NukeBuild
                                                                            .SetTitle(project.Name)
                                                                            .SetCopyright(Copyright)
                                                                            .SetDescription(project.Name)
-                                                                           .SetPackageReleaseNotes(GetNuGetReleaseNotes(currentChangeLogFile, GitRepository))
                                                                            .SetVersion(GitVersion.NuGetVersionV2)
                                                                            .SetRepositoryUrl("https://github.com/mariohines/Cloud.Framework")
                                                                            .EnableIncludeSymbols());
