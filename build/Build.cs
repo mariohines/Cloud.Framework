@@ -15,7 +15,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions(@"main",
-               GitHubActionsImage.Ubuntu1804,
+               GitHubActionsImage.UbuntuLatest,
                GitHubActionsImage.MacOsLatest,
                AutoGenerate = false,
                On = new[] {GitHubActionsTrigger.Push},
@@ -107,7 +107,6 @@ class Build : NukeBuild
                                                                            .SetAuthors(Author)
                                                                            .SetTitle(project.Name)
                                                                            .SetCopyright(Copyright)
-                                                                           .SetDescription(project.Name)
                                                                            .SetVersion(GitVersion.MajorMinorPatch)
                                                                            .SetRepositoryUrl("https://github.com/mariohines/Cloud.Framework")
                                                                            .SetVerbostiy(DotNetVerbosity.Detailed)
