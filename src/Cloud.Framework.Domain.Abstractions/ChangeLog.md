@@ -1,8 +1,5 @@
 # Change Log
-All notable changes to the `Cloud.Framework.Core` codebase.
-
-## v0.1.0
-- Initial Release
+All notable changes to the `Cloud.Framework.Domain.Abstractions` codebase.
 
 ## v1.0.0
 - Move Enumeration class from `Cloud.Framework.Core` to `Cloud.Framework.Domain.Abstractions`.

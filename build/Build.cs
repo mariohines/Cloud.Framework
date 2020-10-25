@@ -47,7 +47,7 @@ class Build : NukeBuild
     static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
     const string Author = "Mario S. Hines";
-    const string ProjectUrl = "https://githumb.com/mariohines/Cloud.Framework";
+    const string ProjectUrl = "https://github.com/mariohines/Cloud.Framework";
     const string Copyright = "Gigatech Software Consulting, LLC.";
     const string ChangeLogFile = "ChangeLog.md";
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
