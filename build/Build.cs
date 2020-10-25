@@ -1,4 +1,5 @@
 using Nuke.Common;
+using Nuke.Common.ChangeLog;
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
@@ -9,6 +10,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
+using static Nuke.Common.ChangeLog.ChangelogTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -95,13 +97,14 @@ class Build : NukeBuild
                                       Solution.Projects
                                               .ForEach(project =>
                                                        {
+                                                           var changeLogFile = project.Directory / "ChangeLog.md";
                                                            DotNetPack(_ => _
                                                                            .SetConfiguration(Configuration)
                                                                            .SetWorkingDirectory(project.Directory)
                                                                            .SetOutputDirectory(ArtifactsDirectory)
                                                                            .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
                                                                            .SetVersion(GitVersion.MajorMinorPatch)
-                                                                           .SetVerbostiy(DotNetVerbosity.Detailed)
+                                                                           .SetPackageReleaseNotes(GetNuGetReleaseNotes(changeLogFile, GitRepository))
                                                                            .EnableIncludeSymbols());
                                                        });
                                   });
