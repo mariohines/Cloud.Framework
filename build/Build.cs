@@ -45,9 +45,6 @@ class Build : NukeBuild
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
     static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
-    const string Author = "Mario S. Hines";
-    const string ProjectUrl = "https://github.com/mariohines/Cloud.Framework";
-    const string Copyright = "Gigatech Software Consulting, LLC.";
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
     const string PackageSourceName = "github";
     const string PackageFiles = "*.nupkg";
@@ -102,13 +99,8 @@ class Build : NukeBuild
                                                                            .SetConfiguration(Configuration)
                                                                            .SetWorkingDirectory(project.Directory)
                                                                            .SetOutputDirectory(ArtifactsDirectory)
-                                                                           .SetPackageProjectUrl(ProjectUrl)
                                                                            .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
-                                                                           .SetAuthors(Author)
-                                                                           .SetTitle(project.Name)
-                                                                           .SetCopyright(Copyright)
                                                                            .SetVersion(GitVersion.MajorMinorPatch)
-                                                                           .SetRepositoryUrl("https://github.com/mariohines/Cloud.Framework")
                                                                            .SetVerbostiy(DotNetVerbosity.Detailed)
                                                                            .EnableIncludeSymbols());
                                                        });
