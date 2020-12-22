@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Cloud.Framework.Core.Extensions
 {
@@ -80,6 +81,16 @@ namespace Cloud.Framework.Core.Extensions
             return DateTime.TryParse(source, out var parsedDate) && parsedDate != default
                        ? parsedDate
                        : DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Method to get the first non-null value from the passed in arguments including the source.
+        /// </summary>
+        /// <param name="source">The string this method is executed on.</param>
+        /// <param name="parameterSet">Collection of values to execute against.</param>
+        /// <returns>The first non-null <see cref="string"/> value.</returns>
+        public static string? Coalesce(this string source, params string[] parameterSet) {
+            return source.HasValue() ? source : parameterSet.FirstOrDefault(p => p.HasValue());
         }
     }
 }

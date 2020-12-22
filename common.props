@@ -1,0 +1,30 @@
+<Project>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0; netstandard2.1; net5.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+        <Authors>Mario S. Hines</Authors>
+        <PackageProjectUrl>https://github.com/mariohines/Cloud.Framework</PackageProjectUrl>
+        <Copyright>Gigatech Software Consulting, LLC.</Copyright>
+        <Title>$(AssemblyName)</Title>
+        <RepositoryUrl>https://github.com/mariohines/Cloud.Framework</RepositoryUrl>
+    </PropertyGroup>
+    <Choose>
+        <When Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+            <PropertyGroup>
+                <LangVersion>8</LangVersion>
+            </PropertyGroup>
+        </When>
+        <When Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
+            <PropertyGroup>
+                <LangVersion>8</LangVersion>
+            </PropertyGroup>
+        </When>
+        <When Condition=" '$(TargetFramework)' == 'net5.0' ">
+            <PropertyGroup>
+                <LangVersion>9</LangVersion>
+            </PropertyGroup>
+        </When>
+    </Choose>
+</Project>

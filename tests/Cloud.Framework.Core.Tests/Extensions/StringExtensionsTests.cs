@@ -128,6 +128,17 @@ namespace Cloud.Framework.Core.Tests.Extensions
             actual.Should().Be(expected);
         }
 
+        [Theory]
+        [InlineData("Test", new[] {(string)null, "Hello"}, "Test")]
+        [InlineData((string)null, new[] {"Hello", "Just in case"}, "Hello")]
+        public void StringExtensions_Coalesce_Returns_Expected(string sut, string[] parameters, string expected) {
+            // act
+            var actual = sut.Coalesce(parameters);
+            
+            // assert
+            actual.Should().Be(expected);
+        }
+
         private sealed class GetDateFromStringTestData : IEnumerable<object[]>
         {
             public IEnumerator<object[]> GetEnumerator()

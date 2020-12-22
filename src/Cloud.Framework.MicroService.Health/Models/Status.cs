@@ -94,7 +94,7 @@ namespace Cloud.Framework.MicroService.Health.Models
         /// </summary>
         /// <example>50000 milliseconds</example>
         [DataMember(Name = "up_duration")]
-        public string? UpDuration => $"{Process.GetCurrentProcess().StartTime.Subtract(DateTime.UtcNow).TotalMilliseconds} milliseconds";
+        public string UpDuration => $"{Process.GetCurrentProcess().StartTime.Subtract(DateTime.UtcNow).TotalMilliseconds} milliseconds";
 
         /// <summary>
         /// The time at which the service was started.
@@ -106,6 +106,6 @@ namespace Cloud.Framework.MicroService.Health.Models
         /// The version of the service responding to the request.
         /// </summary>
         [DataMember(Name = "version")]
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string? Version => Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString();
     }
 }

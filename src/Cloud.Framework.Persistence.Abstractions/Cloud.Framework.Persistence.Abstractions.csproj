@@ -1,17 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+    <Import Project="../../common.props" />
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-        <LangVersion>8.0</LangVersion>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <DocumentationFile>bin\$(Configuration)\Cloud.Framework.Persistence.Abstractions.xml</DocumentationFile>
         <Description>The base framework for accessing a SQL database.</Description>
-        <Authors>Mario S. Hines</Authors>
-        <PackageProjectUrl>https://github.com/mariohines/Cloud.Framework</PackageProjectUrl>
-        <Copyright>Gigatech Software Consulting, LLC.</Copyright>
-        <Title>$(AssemblyName)</Title>
-        <RepositoryUrl>https://github.com/mariohines/Cloud.Framework</RepositoryUrl>
     </PropertyGroup>
 
 </Project>

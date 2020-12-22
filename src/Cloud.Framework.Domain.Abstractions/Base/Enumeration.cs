@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,8 @@ namespace Cloud.Framework.Domain.Abstractions.Base
     /// Abstract implementation of an enumeration class that boasts greater usability than a regular enumeration.
     /// </summary>
     /// <typeparam name="T">The value type for the enumeration.</typeparam>
-    public abstract class Enumeration<T> : IComparable, IComparable<Enumeration<T>>
-        where T : struct, IComparable, IComparable<T>
+    public abstract class Enumeration<T> : IComparable<Enumeration<T>>, IEquatable<Enumeration<T>>
+        where T : struct, IComparable<T>
     {
         /// <summary>The display name for the enumeration.</summary>
         public string Name { get; }
@@ -30,28 +32,18 @@ namespace Cloud.Framework.Domain.Abstractions.Base
         public override string ToString() => Name;
 
         /// <inheritdoc />
-        public override bool Equals(object obj) {
-            if (!(obj is Enumeration<T> other)) {
-                return false;
-            }
-
-            var doesTypeMatch = GetType() == obj.GetType();
-            var doesValueMatch = Id.Equals(other.Id);
-            var doesHashCodeMatch = GetHashCode() == other.GetHashCode();
-
-            return doesTypeMatch && doesValueMatch && doesHashCodeMatch;
+        public int CompareTo(Enumeration<T>? other) {
+            if (other == null) return -1;
+            return Id.CompareTo(other.Id);
         }
+
+        /// <inheritdoc />
+        public bool Equals(Enumeration<T>? other) => Id.Equals(other?.Id);
 
         /// <inheritdoc />
         public override int GetHashCode() {
             return Id.GetHashCode() + Name.GetHashCode();
         }
-
-        /// <inheritdoc />
-        public int CompareTo(object obj) => Id.CompareTo(((Enumeration<T>) obj).Id);
-
-        /// <inheritdoc />
-        public int CompareTo(Enumeration<T> other) => Id.CompareTo(other.Id);
 
 
         /// <summary>

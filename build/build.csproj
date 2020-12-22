@@ -9,16 +9,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuke.Common" Version="0.24.11" />
+    <PackageReference Include="Nuke.Common" Version="5.0.1" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.1.1]" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ci" />
+    <None Remove="..\.github\workflows\main.yml" />
+    <None Remove=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="..\.github\workflows\main.yml" />
+    <Content Include="..\.github\workflows\main.yml">
+      <Link>ci\main.yml</Link>
+    </Content>
+    <Content Include="..\.nuke">
+      <Link>config\.nuke</Link>
+    </Content>
+    <Content Include="..\build.cmd">
+      <Link>boot\build.cmd</Link>
+    </Content>
+    <Content Include="..\build.ps1">
+      <Link>boot\build.ps1</Link>
+    </Content>
+    <Content Include="..\build.sh">
+      <Link>boot\build.sh</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

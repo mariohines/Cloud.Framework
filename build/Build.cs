@@ -1,5 +1,5 @@
+using build;
 using Nuke.Common;
-using Nuke.Common.ChangeLog;
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
@@ -22,33 +22,26 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
                AutoGenerate = false,
                On = new[] {GitHubActionsTrigger.Push},
                InvokedTargets = new[] {nameof(Push)},
-               ImportGitHubTokenAs = nameof(GitHubToken))]
+               ImportGitHubTokenAs = nameof(_gitHubToken))]
 class Build : NukeBuild
 {
-    /// Support plugins are available for:
-    ///   - JetBrains ReSharper        https://nuke.build/resharper
-    ///   - JetBrains Rider            https://nuke.build/rider
-    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
-    ///   - Microsoft VSCode           https://nuke.build/vscode
-
     public static int Main() => Execute<Build>();
 
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)", Name = nameof(Configuration))]
+    readonly Configuration _configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
-    readonly string GitHubToken;
+    readonly string _gitHubToken;
 
-    [Required] [Solution] readonly Solution Solution;
-    [Required] [GitRepository] readonly GitRepository GitRepository;
-    [Required] [GitVersion(Framework = "netcoreapp3.0")] readonly GitVersion GitVersion;
+    [Required] [Solution] readonly Solution _solution;
+    [Required] [GitRepository] readonly GitRepository _gitRepository;
+    [Required] [GitVersion(Framework = "netcoreapp3.0")] readonly GitVersion _gitVersion;
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
     static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
-    const string PackageSourceName = "github";
     const string PackageFiles = "*.nupkg";
 
     Target Clean => _ => _
@@ -63,20 +56,20 @@ class Build : NukeBuild
                            .DependsOn(Clean)
                            .Executes(() =>
                                      {
-                                         DotNetRestore(_ => _
-                                                           .SetProjectFile(Solution));
+                                         DotNetRestore(c => c
+                                                           .SetProjectFile(_solution));
                                      });
 
     Target Compile => _ => _
                            .DependsOn(Restore)
                            .Executes(() =>
                                      {
-                                         DotNetBuild(_ => _
-                                                          .SetProjectFile(Solution)
-                                                          .SetConfiguration(Configuration)
-                                                          .SetAssemblyVersion(GitVersion.AssemblySemVer)
-                                                          .SetFileVersion(GitVersion.AssemblySemFileVer)
-                                                          .SetInformationalVersion(GitVersion.InformationalVersion)
+                                         DotNetBuild(c => c
+                                                          .SetProjectFile(_solution)
+                                                          .SetConfiguration(_configuration)
+                                                          .SetAssemblyVersion(_gitVersion.AssemblySemVer)
+                                                          .SetFileVersion(_gitVersion.AssemblySemFileVer)
+                                                          .SetInformationalVersion(_gitVersion.InformationalVersion)
                                                           .SetNoRestore(InvokedTargets.Contains(Restore)));
                                      });
 
@@ -84,9 +77,9 @@ class Build : NukeBuild
                              .DependsOn(Compile)
                              .Executes(() =>
                                        {
-                                           DotNetTest(_ => _
-                                                           .SetWorkingDirectory(TestsDirectory)
-                                                           .SetProjectFile(Solution)
+                                           DotNetTest(c => c
+                                                           .SetProcessWorkingDirectory(TestsDirectory)
+                                                           .SetProjectFile(_solution)
                                                            .SetNoBuild(InvokedTargets.Contains(Compile)));
                                        });
 
@@ -94,17 +87,17 @@ class Build : NukeBuild
                         .DependsOn(UnitTests)
                         .Executes(() =>
                                   {
-                                      Solution.Projects
+                                      _solution.Projects
                                               .ForEach(project =>
                                                        {
                                                            var changeLogFile = project.Directory / "ChangeLog.md";
-                                                           DotNetPack(_ => _
-                                                                           .SetConfiguration(Configuration)
-                                                                           .SetWorkingDirectory(project.Directory)
+                                                           DotNetPack(c => c
+                                                                           .SetConfiguration(_configuration)
+                                                                           .SetProcessWorkingDirectory(project.Directory)
                                                                            .SetOutputDirectory(ArtifactsDirectory)
                                                                            .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
-                                                                           .SetVersion(GitVersion.MajorMinorPatch)
-                                                                           .SetPackageReleaseNotes(GetNuGetReleaseNotes(changeLogFile, GitRepository))
+                                                                           .SetVersion(_gitVersion.MajorMinorPatch)
+                                                                           .SetPackageReleaseNotes(GetNuGetReleaseNotes(changeLogFile, _gitRepository))
                                                                            .EnableIncludeSymbols());
                                                        });
                                   });
@@ -113,15 +106,14 @@ class Build : NukeBuild
                         .ProceedAfterFailure()
                         .DependsOn(Pack)
                         .Consumes(Pack)
-                        .Requires(() => GitHubToken)
+                        .Requires(() => _gitHubToken)
                         .Executes(() =>
                                   {
-                                      // DotNet($"nuget add source {PackagePushSource} -n {PackageSourceName} -u {GitRepository.GetGitHubOwner()} -p {GitHubToken} --store-password-in-clear-text");
                                       DotNetNuGetPush(s => s
                                                            .SetSource(PackagePushSource)
                                                            .EnableSkipDuplicate()
-                                                           .SetApiKey(GitHubToken)
-                                                           .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (_, v) => 
-                                                                                                                                   _.SetTargetPath(v)));
+                                                           .SetApiKey(_gitHubToken)
+                                                           .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (c, v) =>
+                                                                            c.SetTargetPath(v)));
                                   });
 }
