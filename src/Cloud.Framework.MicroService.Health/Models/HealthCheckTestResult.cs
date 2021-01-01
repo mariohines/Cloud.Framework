@@ -6,7 +6,7 @@ namespace Cloud.Framework.MicroService.Health.Models
     /// <summary>
     /// Result of a health check test.
     /// </summary>
-    public class HealthCheckTestResult
+    public sealed class HealthCheckTestResult
     {
         /// <summary>
         /// Number of milliseconds taken to run the test.

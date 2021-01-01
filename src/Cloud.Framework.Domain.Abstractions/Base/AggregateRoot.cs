@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Cloud.Framework.Domain.Abstractions.Interfaces;
@@ -15,18 +17,13 @@ namespace Cloud.Framework.Domain.Abstractions.Base
         public ConcurrentQueue<IEvent> EventQueue { get; }
 
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        protected AggregateRoot() {
-            EventQueue = new ConcurrentQueue<IEvent>();
-        }
-
-        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="events">Collection of events to add to the root.</param>
-        protected AggregateRoot(IEnumerable<IEvent> events) {
-            EventQueue = new ConcurrentQueue<IEvent>(events);
+        protected AggregateRoot(IEnumerable<IEvent>? events = null) {
+            EventQueue = events != null
+                             ? new ConcurrentQueue<IEvent>(events)
+                             : new ConcurrentQueue<IEvent>();
         }
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace Cloud.Framework.Domain.Abstractions.Base
     public abstract class AggregateRoot<TId> : AggregateRoot
     {
         /// <summary>
-        /// The identifier of this object.
+        /// The identifier of this aggregate.
         /// </summary>
         public TId Id { get; }
 
@@ -51,16 +48,8 @@ namespace Cloud.Framework.Domain.Abstractions.Base
         /// Constructor.
         /// </summary>
         /// <param name="id">The value of the <see cref="Id"/> property.</param>
-        protected AggregateRoot(TId id) {
-            Id = id;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="id">The value of the <see cref="Id"/> property.</param>
         /// <param name="events">Collection of events to add to the root.</param>
-        protected AggregateRoot(TId id, IEnumerable<IEvent> events) : base(events) {
+        protected AggregateRoot(TId id, IEnumerable<IEvent>? events = null) : base(events) {
             Id = id;
         }
     }

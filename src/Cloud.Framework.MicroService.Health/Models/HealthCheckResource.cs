@@ -7,7 +7,7 @@ namespace Cloud.Framework.MicroService.Health.Models
     /// <summary>
     /// Provides information about internal health and its perceived health of downstream dependencies.
     /// </summary>
-    public class HealthCheckResource
+    public sealed class HealthCheckResource
     {
         /// <summary>
         /// Constructor

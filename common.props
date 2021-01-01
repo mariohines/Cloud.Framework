@@ -11,12 +11,7 @@
         <RepositoryUrl>https://github.com/mariohines/Cloud.Framework</RepositoryUrl>
     </PropertyGroup>
     <Choose>
-        <When Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-            <PropertyGroup>
-                <LangVersion>8</LangVersion>
-            </PropertyGroup>
-        </When>
-        <When Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
+        <When Condition=" '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' ">
             <PropertyGroup>
                 <LangVersion>8</LangVersion>
             </PropertyGroup>
