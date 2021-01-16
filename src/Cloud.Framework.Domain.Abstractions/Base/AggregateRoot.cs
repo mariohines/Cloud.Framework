@@ -2,6 +2,8 @@
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 using Cloud.Framework.Domain.Abstractions.Interfaces;
 
 namespace Cloud.Framework.Domain.Abstractions.Base
@@ -14,6 +16,7 @@ namespace Cloud.Framework.Domain.Abstractions.Base
         /// <summary>
         /// The concurrent collection of events associated to this object.
         /// </summary>
+        [XmlIgnore, IgnoreDataMember]
         public ConcurrentQueue<IEvent> EventQueue { get; }
 
         /// <summary>

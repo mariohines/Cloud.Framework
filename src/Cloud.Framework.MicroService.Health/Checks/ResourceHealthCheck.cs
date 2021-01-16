@@ -27,7 +27,8 @@ namespace Cloud.Framework.MicroService.Health.Checks
         /// <param name="healthTests">Collection of custom health tests to be run.</param>
         /// <param name="healthStatusFlag">The status flag.</param>
         public ResourceHealthCheck(IEnumerable<IHealthTest> healthTests, IHealthStatusFlag healthStatusFlag) {
-            _healthTests = !healthTests.Any() ? throw new ArgumentException("At least 1 test must exist to use this health check.") : healthTests;
+            var tests = healthTests.ToList();
+            _healthTests = !tests.Any() ? throw new ArgumentException("At least 1 test must exist to use this health check.") : tests;
             _healthStatusFlag = healthStatusFlag;
         }
         

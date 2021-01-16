@@ -12,3 +12,6 @@ All notable changes to the `Cloud.Framework.Persistence.Abstractions` codebase.
   and `net5.0` as optional frameworks.
 - Moved most of the common project attributes to [common.props](../../common.props) file
   and imported it.
+- Updated [DbQuery](./Sql.Base/DbQuery.cs) to allow passing in a transaction.
+- Added a method to create a non-asynchronous transaction to [IDbContext](./Sql.Interfaces/IDbContext.cs).
+- Added a method to get the current transaction to [IDbContext](./Sql.Interfaces/IDbContext.cs).

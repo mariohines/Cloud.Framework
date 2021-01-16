@@ -21,6 +21,7 @@ namespace Cloud.Framework.Persistence.Abstractions.Tests.Sql.Base
             sut.Parameters.Should().BeNull();
             sut.Token.Should().Be(default(CancellationToken));
             sut.Type.Should().Be(CommandType.Text);
+            sut.Transaction.Should().BeNull();
             sut.Sql.Should().NotBeNullOrWhiteSpace()
                .And
                .Be(sql);

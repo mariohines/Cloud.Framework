@@ -23,5 +23,20 @@ namespace Cloud.Framework.Persistence.Abstractions.Tests.Sql.Interfaces
                   .And
                   .BeAssignableTo<DbConnection>();
         }
+    
+        [Fact]
+        public void CreateDbTransaction_Tests_Succeeds() {
+            // arrange
+            var sut = Substitute.For<IDbContext>();
+            sut.CreateDbTransaction().Returns(new MySqlConnection().BeginTransaction());
+            
+            // act
+            var actual = sut.CreateDbTransaction();
+            
+            // assert
+            actual.Should().NotBeNull()
+                  .And
+                  .BeAssignableTo<DbTransaction>();
+        }
     }
 }

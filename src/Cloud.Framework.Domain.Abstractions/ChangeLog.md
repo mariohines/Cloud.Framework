@@ -7,6 +7,7 @@ All notable changes to the `Cloud.Framework.Domain.Abstractions` codebase.
 
 ## v2.0.0
 - Updated [AggregateRoot](./Base/AggregateChild.cs) constructors to be cleaner.
+- Added `XmlIgnore` and `IgnoreDataMember` attributes to `Events` property of [AggregateRoot](./Base/AggregateChild.cs).  
 - Updated `TargetFramework` to `TargetFrameworks` and included `netstandard2.0`
   and `net5.0` as optional frameworks.
 - Moved most of the common project attributes to [common.props](../../common.props) file
