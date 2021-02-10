@@ -15,7 +15,7 @@ namespace Cloud.Framework.Domain.Abstractions.Base
         /// <summary>
         /// The parent root.
         /// </summary>
-        protected internal TParent? Parent { get; private set; }
+        protected internal TParent? Parent { get; protected set; }
 
         /// <summary>
         /// Method to set the <see cref="Parent"/> property.
