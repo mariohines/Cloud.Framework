@@ -7,6 +7,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
@@ -40,6 +41,7 @@ class Build : NukeBuild
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
     static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    static AbsolutePath CoverageOutputDirectory => ArtifactsDirectory / "coverage-results";
 
     const string PackagePushSource = "https://nuget.pkg.github.com/mariohines/index.json";
     const string PackageFiles = "*.nupkg";
@@ -80,7 +82,10 @@ class Build : NukeBuild
                                            DotNetTest(c => c
                                                            .SetProcessWorkingDirectory(TestsDirectory)
                                                            .SetProjectFile(_solution)
-                                                           .SetNoBuild(InvokedTargets.Contains(Compile)));
+                                                           .SetNoBuild(InvokedTargets.Contains(Compile))
+                                                           .EnableCollectCoverage()
+                                                           .SetCoverletOutput(CoverageOutputDirectory)
+                                                           .SetCoverletOutputFormat(CoverletOutputFormat.lcov));
                                        });
 
     Target Pack => _ => _

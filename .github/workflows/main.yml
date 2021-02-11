@@ -28,6 +28,11 @@ jobs:
         run: ./build.cmd Push -Token $GitHubToken
         env:
             GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Coverage Report to coveralls.io
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./artifacts/coverage-results/coverage.info
   macOS-latest:
     name: macOS-latest
     runs-on: macOS-latest
@@ -37,3 +42,8 @@ jobs:
         run: ./build.cmd Push -Token $GitHubToken
         env:
             GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Coverage Report to coveralls.io
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./artifacts/coverage-results/coverage.info

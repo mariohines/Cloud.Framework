@@ -12,4 +12,7 @@ All notable changes to the `Cloud.Framework.Domain.Abstractions` codebase.
   and `net5.0` as optional frameworks.
 - Moved most of the common project attributes to [common.props](../../common.props) file
   and imported it.
-- Updated [AggregateChild](./Base/AggregateChild.cs) `Parent` property to `protected set` from `private set`.  
+- Updated [AggregateChild](./Base/AggregateChild.cs) `Parent` property to `protected set` from `private set`.
+
+## v2.1.0
+- Added [PhoneNumber](./Types/PhoneNumber.cs) and [Address](./Types/Address.cs) value types. These are based on US Standards.

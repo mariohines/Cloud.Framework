@@ -2,7 +2,7 @@
 
 # Cloud Framework
 ## Author: Mario Hines
-## Framework: .NET Standard 2.1
+## Frameworks: .NET Standard 2.0, .NET Standard 2.1, .NET 5.0
 
 ### Description
 Custom solution that has projects for standard development to avoid redundancy, standard health checks for a web microservice, 
