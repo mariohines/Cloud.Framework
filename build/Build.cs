@@ -84,7 +84,7 @@ class Build : NukeBuild
                                                            .SetProjectFile(_solution)
                                                            .SetNoBuild(InvokedTargets.Contains(Compile))
                                                            .EnableCollectCoverage()
-                                                           .SetCoverletOutput(CoverageOutputDirectory)
+                                                           .SetCoverletOutput(CoverageOutputDirectory / "coverage.info")
                                                            .SetCoverletOutputFormat(CoverletOutputFormat.lcov));
                                        });
 
