@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/mariohines/Cloud.Framework/badge.svg?branch=master)](https://coveralls.io/github/mariohines/Cloud.Framework?branch=master)
+![Main Worklow](https://github.com/mariohines/Cloud.Framework/workflows/main/badge.svg?event=push) [![Coverage Status](https://coveralls.io/repos/github/mariohines/Cloud.Framework/badge.svg?branch=master)](https://coveralls.io/github/mariohines/Cloud.Framework?branch=master)
 
 # Cloud Framework
 ## Author: Mario Hines
