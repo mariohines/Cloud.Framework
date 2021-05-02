@@ -35,4 +35,26 @@ namespace Cloud.Framework.Domain.Abstractions.Base
             Parent.AddEvent(@event);
         }
     }
+
+    /// <summary>
+    /// An abstract class to implement an immediate child/grandchild of an <see cref="AggregateRoot"/>.
+    /// </summary>
+    /// <typeparam name="TId">The type for the <see cref="Id"/> of the child.</typeparam>
+    /// <typeparam name="TParent">The type of the parent. Must inherit from <see cref="AggregateRoot"/>.</typeparam>
+    public abstract class AggregateChild<TId, TParent> : AggregateChild<TParent>
+        where TParent : AggregateRoot
+    {
+        /// <summary>
+        /// The identifier of this aggregate child.
+        /// </summary>
+        public TId Id { get; }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="id">The value of the <see cref="Id"/> property.</param>
+        protected AggregateChild(TId id) {
+            Id = id;
+        }
+    }
 }

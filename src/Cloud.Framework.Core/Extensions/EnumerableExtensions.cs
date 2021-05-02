@@ -35,5 +35,15 @@ namespace Cloud.Framework.Core.Extensions
                 action(item);
             }
         }
+
+        /// <summary>
+        /// Method to return an empty collection if the collection is null.
+        /// </summary>
+        /// <param name="source">The source collection.</param>
+        /// <typeparam name="T">The type of object.</typeparam>
+        /// <returns>The source collection if not null, else an empty collection.</returns>
+        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source) {
+            return source ?? Enumerable.Empty<T>();
+        }
     }
 }

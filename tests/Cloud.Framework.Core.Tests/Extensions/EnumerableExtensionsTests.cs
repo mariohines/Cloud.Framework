@@ -24,6 +24,18 @@ namespace Cloud.Framework.Core.Tests.Extensions
                 batch.Should().HaveCount(expected);
             }
         }
+
+        [Fact]
+        public void EnumerableExtensions_EmptyIfNull_Returns_Expected() {
+            // arrange
+            IEnumerable<string> sut = null;
+            
+            // act
+            var actual = sut.EmptyIfNull();
+            
+            // assert
+            actual.Should().BeEmpty();
+        }
         
         private sealed class AsBatchTestData : IEnumerable<object[]>
         {
