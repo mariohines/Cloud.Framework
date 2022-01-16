@@ -16,3 +16,7 @@ All notable changes to the `Cloud.Framework.Domain.Abstractions` codebase.
 
 ## v2.1.0
 - Added [PhoneNumber](./Types/PhoneNumber.cs) and [Address](./Types/Address.cs) value types. These are based on US Standards.
+
+## v2.3.0
+- Update to [AggregateChild](./Base/AggregateChild.cs)
+- Update to [IEvent](./Interfaces/IEvent.cs)
