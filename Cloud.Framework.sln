@@ -14,11 +14,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.Persistence
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.Persistence.Abstractions.Tests", "tests\Cloud.Framework.Persistence.Abstractions.Tests\Cloud.Framework.Persistence.Abstractions.Tests.csproj", "{AEA93468-B64C-4212-B6F5-67416BF2C3D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "build", "build\build.csproj", "{266FE22D-EF62-4476-A491-042BE73D70BA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.Domain.Abstractions", "src\Cloud.Framework.Domain.Abstractions\Cloud.Framework.Domain.Abstractions.csproj", "{341405C2-11E7-4856-A59A-3C96B54CACA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud.Framework.Domain.Abstractions.Tests", "tests\Cloud.Framework.Domain.Abstractions.Tests\Cloud.Framework.Domain.Abstractions.Tests.csproj", "{D43A267D-2D0D-4812-87E2-C63ABD76CE55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "build", "build\build.csproj", "{C40BE189-2AA5-4F4E-B667-3A8783A16719}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,8 +26,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{266FE22D-EF62-4476-A491-042BE73D70BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{266FE22D-EF62-4476-A491-042BE73D70BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40BE189-2AA5-4F4E-B667-3A8783A16719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40BE189-2AA5-4F4E-B667-3A8783A16719}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD2EF48A-2225-45EE-972B-223DC5C75D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD2EF48A-2225-45EE-972B-223DC5C75D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD2EF48A-2225-45EE-972B-223DC5C75D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,7 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{42B05D1B-CDF6-49E3-B2BE-671C10E68BBA} = {67A13783-BB8B-4AE4-ABF0-4C4518149B55}
 		{AEA93468-B64C-4212-B6F5-67416BF2C3D8} = {67A13783-BB8B-4AE4-ABF0-4C4518149B55}
-		{266FE22D-EF62-4476-A491-042BE73D70BA} = {CFC660BC-9D34-4F6E-BF93-D449BD7369C1}
 		{D43A267D-2D0D-4812-87E2-C63ABD76CE55} = {67A13783-BB8B-4AE4-ABF0-4C4518149B55}
+		{C40BE189-2AA5-4F4E-B667-3A8783A16719} = {CFC660BC-9D34-4F6E-BF93-D449BD7369C1}
 	EndGlobalSection
 EndGlobal

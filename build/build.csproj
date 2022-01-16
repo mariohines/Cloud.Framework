@@ -2,38 +2,17 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace></RootNamespace>
     <NoWarn>CS0649;CS0169</NoWarn>
     <NukeRootDirectory>..</NukeRootDirectory>
     <NukeScriptDirectory>..</NukeScriptDirectory>
+    <NukeTelemetryVersion>1</NukeTelemetryVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuke.Common" Version="5.0.1" />
-    <PackageDownload Include="GitVersion.Tool" Version="[5.1.1]" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="..\.github\workflows\main.yml" />
-    <None Remove=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\.github\workflows\main.yml">
-      <Link>ci\main.yml</Link>
-    </Content>
-    <Content Include="..\.nuke">
-      <Link>config\.nuke</Link>
-    </Content>
-    <Content Include="..\build.cmd">
-      <Link>boot\build.cmd</Link>
-    </Content>
-    <Content Include="..\build.ps1">
-      <Link>boot\build.ps1</Link>
-    </Content>
-    <Content Include="..\build.sh">
-      <Link>boot\build.sh</Link>
-    </Content>
+    <PackageReference Include="Nuke.Common" Version="6.0.1" />
+    <PackageDownload Include="GitVersion.Tool" Version="[5.8.0]" />
   </ItemGroup>
 
 </Project>

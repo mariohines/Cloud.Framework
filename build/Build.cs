@@ -1,7 +1,5 @@
-using build;
 using Nuke.Common;
 using Nuke.Common.CI;
-using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -11,32 +9,30 @@ using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.ChangeLog.ChangelogTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
-[UnsetVisualStudioEnvironmentVariables]
-[GitHubActions(@"main",
-               GitHubActionsImage.UbuntuLatest,
-               GitHubActionsImage.MacOsLatest,
-               AutoGenerate = false,
-               On = new[] {GitHubActionsTrigger.Push},
-               InvokedTargets = new[] {nameof(Push)},
-               ImportGitHubTokenAs = nameof(_gitHubToken))]
+[ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild
 {
-    public static int Main() => Execute<Build>();
+    /// Support plugins are available for:
+    ///   - JetBrains ReSharper        https://nuke.build/resharper
+    ///   - JetBrains Rider            https://nuke.build/rider
+    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
+    ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)", Name = nameof(Configuration))]
-    readonly Configuration _configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    public static int Main () => Execute<Build>(x => x.Compile);
+
+    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
+    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("API Key for publishing packages to GitHub Package Repository. This should be handled by the runner environment.", Name = "Token")]
-    readonly string _gitHubToken;
+    readonly string GitHubToken;
 
-    [Required] [Solution] readonly Solution _solution;
-    [Required] [GitRepository] readonly GitRepository _gitRepository;
-    [Required] [GitVersion(Framework = "netcoreapp3.0")] readonly GitVersion _gitVersion;
+    [Solution] readonly Solution Solution;
+    [GitRepository] readonly GitRepository GitRepository;
+    [GitVersion] readonly GitVersion GitVersion;
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
     static AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -59,7 +55,7 @@ class Build : NukeBuild
                            .Executes(() =>
                                      {
                                          DotNetRestore(c => c
-                                                           .SetProjectFile(_solution));
+                                                           .SetProjectFile(Solution));
                                      });
 
     Target Compile => _ => _
@@ -67,11 +63,11 @@ class Build : NukeBuild
                            .Executes(() =>
                                      {
                                          DotNetBuild(c => c
-                                                          .SetProjectFile(_solution)
-                                                          .SetConfiguration(_configuration)
-                                                          .SetAssemblyVersion(_gitVersion.AssemblySemVer)
-                                                          .SetFileVersion(_gitVersion.AssemblySemFileVer)
-                                                          .SetInformationalVersion(_gitVersion.InformationalVersion)
+                                                          .SetProjectFile(Solution)
+                                                          .SetConfiguration(Configuration)
+                                                          .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                                                          .SetFileVersion(GitVersion.AssemblySemFileVer)
+                                                          .SetInformationalVersion(GitVersion.InformationalVersion)
                                                           .SetNoRestore(InvokedTargets.Contains(Restore)));
                                      });
 
@@ -81,7 +77,7 @@ class Build : NukeBuild
                                        {
                                            DotNetTest(c => c
                                                            .SetProcessWorkingDirectory(TestsDirectory)
-                                                           .SetProjectFile(_solution)
+                                                           .SetProjectFile(Solution)
                                                            .SetNoBuild(InvokedTargets.Contains(Compile))
                                                            .EnableCollectCoverage()
                                                            .SetCoverletOutput(CoverageOutputDirectory / "coverage.info")
@@ -92,17 +88,16 @@ class Build : NukeBuild
                         .DependsOn(UnitTests)
                         .Executes(() =>
                                   {
-                                      _solution.Projects
+                                      Solution.Projects
                                               .ForEach(project =>
                                                        {
                                                            var changeLogFile = project.Directory / "ChangeLog.md";
                                                            DotNetPack(c => c
-                                                                           .SetConfiguration(_configuration)
+                                                                           .SetConfiguration(Configuration)
                                                                            .SetProcessWorkingDirectory(project.Directory)
                                                                            .SetOutputDirectory(ArtifactsDirectory)
                                                                            .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
-                                                                           .SetVersion(_gitVersion.MajorMinorPatch)
-                                                                           .SetPackageReleaseNotes(GetNuGetReleaseNotes(changeLogFile, _gitRepository))
+                                                                           .SetVersion(GitVersion.MajorMinorPatch)
                                                                            .EnableIncludeSymbols());
                                                        });
                                   });
@@ -111,13 +106,13 @@ class Build : NukeBuild
                         .ProceedAfterFailure()
                         .DependsOn(Pack)
                         .Consumes(Pack)
-                        .Requires(() => _gitHubToken)
+                        .Requires(() => GitHubToken)
                         .Executes(() =>
                                   {
                                       DotNetNuGetPush(s => s
                                                            .SetSource(PackagePushSource)
                                                            .EnableSkipDuplicate()
-                                                           .SetApiKey(_gitHubToken)
+                                                           .SetApiKey(GitHubToken)
                                                            .CombineWith(ArtifactsDirectory.GlobFiles(PackageFiles).NotEmpty(), (c, v) =>
                                                                             c.SetTargetPath(v)));
                                   });
