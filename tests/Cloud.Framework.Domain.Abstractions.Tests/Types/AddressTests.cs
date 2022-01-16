@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using Cloud.Framework.Domain.Abstractions.Types;
@@ -11,7 +10,7 @@ namespace Cloud.Framework.Domain.Abstractions.Tests.Types
     {
         [Theory]
         [MemberData(nameof(AddressCreateData))]
-        public void Address_Create_Returns_Expected(string street, string city, string state, string postalCode, string? apartmentOrSuite, Address expected) {
+        public void Address_Create_Returns_Expected(string street, string city, string state, string postalCode, string apartmentOrSuite, Address expected) {
             // act
             var actual = Address.Create(street, city, state, postalCode, apartmentOrSuite);
 
@@ -25,7 +24,7 @@ namespace Cloud.Framework.Domain.Abstractions.Tests.Types
 
         [Theory]
         [MemberData(nameof(AddressThrowsExceptionData))]
-        public void Address_Create_Throws_Exception(string? street, string? city, string? state, string? postalCode) {
+        public void Address_Create_Throws_Exception(string street, string city, string state, string postalCode) {
             // act
             Action action = () => { Address.Create(street, city, state, postalCode); };
 
