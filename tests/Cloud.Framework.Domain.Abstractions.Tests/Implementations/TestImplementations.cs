@@ -1,3 +1,4 @@
+using System;
 using Cloud.Framework.Domain.Abstractions.Base;
 using Cloud.Framework.Domain.Abstractions.Interfaces;
 
@@ -21,7 +22,11 @@ namespace Cloud.Framework.Domain.Abstractions.Tests.Implementations
 
         public SomeEvent(AggregateRoot model) {
             Model = model;
+            EventId = Guid.NewGuid();
         }
+
+        /// <inheritdoc />
+        public Guid EventId { get; }
     }
 
     public sealed class CommonEnumeration : Enumeration<int>

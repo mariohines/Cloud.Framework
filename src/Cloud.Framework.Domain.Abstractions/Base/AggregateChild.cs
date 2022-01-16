@@ -26,6 +26,12 @@ namespace Cloud.Framework.Domain.Abstractions.Base
         }
 
         /// <summary>
+        /// Method to get the <see cref="Parent"/> property value.
+        /// </summary>
+        /// <returns>The parent root.</returns>
+        public TParent? GetParent() => Parent;
+
+        /// <summary>
         /// Overriden method to add an event. It's added to the parent events.
         /// </summary>
         /// <param name="event">The event to add.</param>

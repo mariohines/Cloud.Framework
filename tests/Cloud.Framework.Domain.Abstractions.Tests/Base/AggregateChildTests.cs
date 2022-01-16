@@ -20,6 +20,18 @@ namespace Cloud.Framework.Domain.Abstractions.Tests.Base
         }
 
         [Fact]
+        public void AggregateChild_GetParent_Succeeds() {
+            // arrange
+            var sut = new ChildModel();
+            
+            // act
+            sut.SetParent(new RootModel());
+            
+            // assert
+            sut.GetParent().Should().NotBeNull();
+        }
+
+        [Fact]
         public void AggregateChild_AddEvent_Succeeds() {
             // arrange
             var root = new RootModel();
